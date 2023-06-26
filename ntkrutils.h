@@ -78,7 +78,7 @@ KeInsertQueueApc(
 	);
 
 // MSDN recommends the string in reverse order
-#define AEHD_POOL_TAG '_MVG'
+#define AEHD_POOL_TAG 0x44484241
 
 // cpuid
 static __forceinline void cpuid(unsigned int op,
