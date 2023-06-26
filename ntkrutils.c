@@ -86,7 +86,7 @@ NTSTATUS aehdGetCpuOnlineMap(void)
 			RelationGroup, NULL, &buffSize);
 	NT_ASSERT(rc == STATUS_INFO_LENGTH_MISMATCH);
 
-	inf = ExAllocatePoolWithTag(NonPagedPool, buffSize, AEHD_POOL_TAG);
+	inf = ExAllocatePool2(POOL_FLAG_NON_PAGED, buffSize, AEHD_POOL_TAG);
 
 	if (!inf)
 		return STATUS_INSUFFICIENT_RESOURCES;
@@ -194,7 +194,7 @@ size_t __declspec(noinline) __vm_mmap(struct file *notused, size_t addr,
 	PVOID UserVA = NULL;
 	struct aehd_mmap_node *node;
 
-	node = ExAllocatePoolWithTag(NonPagedPool,
+	node = ExAllocatePool2(POOL_FLAG_NON_PAGED,
 				     sizeof(struct aehd_mmap_node),
 				     AEHD_POOL_TAG);
 	if (!node)
@@ -203,7 +203,7 @@ size_t __declspec(noinline) __vm_mmap(struct file *notused, size_t addr,
 	if (keva)
 		pMem = (PVOID)keva;
 	else {
-		pMem = ExAllocatePoolWithTag(NonPagedPool, len, AEHD_POOL_TAG);
+		pMem = ExAllocatePool2(POOL_FLAG_NON_PAGED, len, AEHD_POOL_TAG);
 		if (!pMem)
 			goto free_node;
 		RtlZeroMemory(pMem, len);
@@ -474,7 +474,7 @@ static NTSTATUS get_physical_memsize(u64 *size)
 	    rc == STATUS_BUFFER_OVERFLOW))
 		goto key_close;
 
-	buff = ExAllocatePoolWithTag(NonPagedPool, buffSize, AEHD_POOL_TAG);
+	buff = ExAllocatePool2(POOL_FLAG_NON_PAGED, buffSize, AEHD_POOL_TAG);
 	if (!buff) {
 		rc = STATUS_NO_MEMORY;
 		goto key_close;
@@ -585,7 +585,7 @@ NTSTATUS NtKrUtilsInit(void)
 					    HighImportance);
 	}
 
-	pglist = (struct page**)ExAllocatePoolWithTag(NonPagedPool,
+	pglist = (struct page**)ExAllocatePool2(POOL_FLAG_NON_PAGED,
 				max_pagen*sizeof(struct page *),
 				AEHD_POOL_TAG);
 	if (!pglist)
