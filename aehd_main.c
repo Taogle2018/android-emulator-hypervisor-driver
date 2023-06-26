@@ -389,7 +389,7 @@ NTSTATUS _stdcall DriverEntry(PDRIVER_OBJECT pDrvObj, PUNICODE_STRING pRegPath)
 		return rc;
 
 	// Allocate and Initialize a zero page
-	pZeroPage = ExAllocatePoolWithTag(NonPagedPool,
+	pZeroPage = ExAllocatePool2(POOL_FLAG_NON_PAGED,
 					  PAGE_SIZE, AEHD_POOL_TAG);
 	if (!pZeroPage)
 		return STATUS_NO_MEMORY;
