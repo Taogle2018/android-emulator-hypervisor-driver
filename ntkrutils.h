@@ -719,7 +719,7 @@ static __inline void *kmalloc(size_t size, size_t flags)
 	if (flags & __GFP_ZERO)
 		zero = 1;
 
-	ret = ExAllocatePoolWithTag(NonPagedPool, size, AEHD_POOL_TAG);
+	ret = ExAllocatePool2(POOL_FLAG_NON_PAGED, size, AEHD_POOL_TAG);
 
 	if(ret && zero)
 	{
@@ -742,7 +742,7 @@ static __inline void kfree(void* hva)
 
 static __inline void *vmalloc(size_t size)
 {
-	return ExAllocatePoolWithTag(NonPagedPool, size, AEHD_POOL_TAG);
+	return ExAllocatePool2(POOL_FLAG_NON_PAGED, size, AEHD_POOL_TAG);
 }
 
 static __inline void vfree(void* hva)
@@ -832,13 +832,13 @@ static __inline struct page *alloc_page(unsigned int gfp_mask)
 	void* page_hva = NULL;
 	PHYSICAL_ADDRESS pageaddr_phys;
 	int zero = 0;
-	struct page* page = ExAllocatePoolWithTag(NonPagedPool,
+	struct page* page = ExAllocatePool2(POOL_FLAG_NON_PAGED,
 						  sizeof(*page),
 						  AEHD_POOL_TAG);
 	if(!page)
 		goto out_error;
 
-	page_hva = ExAllocatePoolWithTag(NonPagedPool, PAGE_SIZE, AEHD_POOL_TAG);
+	page_hva = ExAllocatePool2(POOL_FLAG_NON_PAGED, PAGE_SIZE, AEHD_POOL_TAG);
 	if(!page_hva)
 		goto out_error_free;
 
