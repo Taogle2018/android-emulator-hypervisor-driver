@@ -2453,7 +2453,7 @@ static struct vmcs *alloc_vmcs_cpu(void)
 {
 	struct vmcs *vmcs;
 
-	vmcs = ExAllocatePoolWithTag(NonPagedPool, PAGE_SIZE, AEHD_POOL_TAG);
+	vmcs = ExAllocatePool2(POOL_FLAG_NON_PAGED, PAGE_SIZE, AEHD_POOL_TAG);
 	if (!vmcs)
 		return NULL;
 	memset(vmcs, 0, vmcs_config.size);
